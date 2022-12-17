@@ -1,1 +1,4 @@
-package==3.3
+package>=3.3
+streamlit
+openai
+
