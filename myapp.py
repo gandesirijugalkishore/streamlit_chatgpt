@@ -8,6 +8,8 @@ st.image(image, caption='JUGAL KISHORE')
 
 api_key_form = st.form("API Key")
 api_key = api_key_form.text_input("API Key", value="")
+send_button = st.button("Send")
+
 
 def generate_response(prompt, api_key):
     openai.api_key = api_key
@@ -16,6 +18,7 @@ def generate_response(prompt, api_key):
 
 prompt_form = st.form("Prompt")
 prompt = prompt_form.text_input("Prompt", value="")
+send_button = st.button("Send")
 
 if prompt_form.submit():
     response = generate_response(prompt, api_key)
