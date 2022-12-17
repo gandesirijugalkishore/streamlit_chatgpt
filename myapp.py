@@ -6,48 +6,48 @@ image = Image.open('Myproject.png')
 
 st.image(image, caption='JUGAL KISHORE')
 
-api_key_form = st.form("API Key")
-api_key = api_key_form.text_input("API Key", value="")
+# api_key_form = st.form("API Key")
+# api_key = api_key_form.text_input("API Key", value="")
 
-def generate_response(prompt, api_key):
-    openai.api_key = api_key
-    response = openai.Completion.create(engine="chatbot", prompt=prompt)
-    return response.choices[0].text
+# def generate_response(prompt, api_key):
+#     openai.api_key = api_key
+#     response = openai.Completion.create(engine="chatbot", prompt=prompt)
+#     return response.choices[0].text
 
-prompt_form = st.form("Prompt")
-prompt = prompt_form.text_input("Prompt", value="")
-# send_button = st.button("Send")
-st.form_submit_button()
-
-
-if prompt_form.submit():
-    response = generate_response(prompt, api_key)
-    st.write(response)
+# prompt_form = st.form("Prompt")
+# prompt = prompt_form.text_input("Prompt", value="")
+# # send_button = st.button("Send")
+# st.form_submit_button()
 
 
-# openai.api_key = "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"
+# if prompt_form.submit():
+#     response = generate_response(prompt, api_key)
+#     st.write(response)
 
-# st.title("GPT-3 Chatbot App")
 
-# def generate_response(prompt):
-#     completions = openai.Completion.create(
-#         engine="text-davinci-002",
-#         prompt=prompt,
-#         max_tokens=1024,
-#         n=1,
-#         temperature=0.5,
-#     )
+openai.api_key = "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"
 
-#     message = completions.choices[0].text
-#     return message
+st.title("GPT-3 Chatbot App")
 
-# message = st.text_input("Enter your message:")
-# send_button = st.button("Send")
+def generate_response(prompt):
+    completions = openai.Completion.create(
+        engine="text-davinci-002",
+        prompt=prompt,
+        max_tokens=1024,
+        n=1,
+        temperature=0.5,
+    )
 
-# if send_button:
-#     response = generate_response(message)
-#     st.write("You said:", message)
-#     st.write("Chatbot says:", response)
+    message = completions.choices[0].text
+    return message
+
+message = st.text_input("Enter your message:")
+send_button = st.button("Send")
+
+if send_button:
+    response = generate_response(message)
+    st.write("You said:", message)
+    st.write("Chatbot says:", response)
 
 
 
