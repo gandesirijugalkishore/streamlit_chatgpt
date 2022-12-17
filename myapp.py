@@ -5,7 +5,7 @@ from PIL import Image
 image = Image.open('Myproject.png')
 
 st.image(image, caption='JUGAL KISHORE')
-openai.api_key = "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"
+openai.api_key = "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"
 
 st.title("GPT-3 Chatbot App")
 
