@@ -25,7 +25,7 @@ st.image(image, caption='JUGAL KISHORE')
 #     st.write(response)
 
 
-openai.api_key = "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"
+openai.api_key = "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"
 
 st.title("GPT-3 Chatbot App")
 
