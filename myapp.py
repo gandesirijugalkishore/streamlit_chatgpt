@@ -5,29 +5,46 @@ from PIL import Image
 image = Image.open('Myproject.png')
 
 st.image(image, caption='JUGAL KISHORE')
-openai.api_key = "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"
 
-st.title("GPT-3 Chatbot App")
+api_key_form = st.form("API Key")
+api_key = api_key_form.text_input("API Key", value="")
 
-def generate_response(prompt):
-    completions = openai.Completion.create(
-        engine="text-davinci-002",
-        prompt=prompt,
-        max_tokens=1024,
-        n=1,
-        temperature=0.5,
-    )
+def generate_response(prompt, api_key):
+    openai.api_key = api_key
+    response = openai.Completion.create(engine="chatbot", prompt=prompt)
+    return response.choices[0].text
 
-    message = completions.choices[0].text
-    return message
+prompt_form = st.form("Prompt")
+prompt = prompt_form.text_input("Prompt", value="")
 
-message = st.text_input("Enter your message:")
-send_button = st.button("Send")
+if prompt_form.submit():
+    response = generate_response(prompt, api_key)
+    st.write(response)
 
-if send_button:
-    response = generate_response(message)
-    st.write("You said:", message)
-    st.write("Chatbot says:", response)
+
+# openai.api_key = "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"
+
+# st.title("GPT-3 Chatbot App")
+
+# def generate_response(prompt):
+#     completions = openai.Completion.create(
+#         engine="text-davinci-002",
+#         prompt=prompt,
+#         max_tokens=1024,
+#         n=1,
+#         temperature=0.5,
+#     )
+
+#     message = completions.choices[0].text
+#     return message
+
+# message = st.text_input("Enter your message:")
+# send_button = st.button("Send")
+
+# if send_button:
+#     response = generate_response(message)
+#     st.write("You said:", message)
+#     st.write("Chatbot says:", response)
 
 
 
