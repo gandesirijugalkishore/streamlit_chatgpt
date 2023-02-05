@@ -1,53 +1,95 @@
 import streamlit as st
-import openai
-from PIL import Image
+import requests
+from bs4 import BeautifulSoup
 
-image = Image.open('Myproject.png')
+st.title("Social Media Comment Scraper")
 
-st.image(image, caption='JUGAL KISHORE')
+# Function to scrape comments from the social media post
+def scrape_comments(link):
+    # Send a GET request to the link
+    page = requests.get(link)
+    # Parse the page content with BeautifulSoup
+    soup = BeautifulSoup(page.content, "html.parser")
+    # Find all the comment elements on the page
+    comments = soup.find_all("div", class_="comments")
+    return comments
 
-# api_key_form = st.form("API Key")
-# api_key = api_key_form.text_input("API Key", value="")
+# Function to perform sentiment analysis on the comments
+def sentiment_analysis(comments):
+    good_count = 0
+    bad_count = 0
+    # Loop through the comments and perform sentiment analysis
+    for comment in comments:
+        if "good" in comment.text or "great" in comment.text:
+            good_count += 1
+        elif "bad" in comment.text or "worst" in comment.text:
+            bad_count += 1
+    return good_count, bad_count
 
-# def generate_response(prompt, api_key):
-#     openai.api_key = api_key
-#     response = openai.Completion.create(engine="chatbot", prompt=prompt)
-#     return response.choices[0].text
+# Get the social media post link from the user
+link = st.text_input("Enter a social media post link:")
 
-# prompt_form = st.form("Prompt")
-# prompt = prompt_form.text_input("Prompt", value="")
-# # send_button = st.button("Send")
-# st.form_submit_button()
+# Scrape the comments from the post
+comments = scrape_comments(link)
+
+# Perform sentiment analysis on the comments
+if comments:
+    good_count, bad_count = sentiment_analysis(comments)
+    st.write("Good reviews:", good_count)
+    st.write("Bad reviews:", bad_count)
+else:
+    st.write("No comments found.")
+
+# import streamlit as st
+# import openai
+# from PIL import Image
+
+# image = Image.open('Myproject.png')
+
+# st.image(image, caption='JUGAL KISHORE')
+
+# # api_key_form = st.form("API Key")
+# # api_key = api_key_form.text_input("API Key", value="")
+
+# # def generate_response(prompt, api_key):
+# #     openai.api_key = api_key
+# #     response = openai.Completion.create(engine="chatbot", prompt=prompt)
+# #     return response.choices[0].text
+
+# # prompt_form = st.form("Prompt")
+# # prompt = prompt_form.text_input("Prompt", value="")
+# # # send_button = st.button("Send")
+# # st.form_submit_button()
 
 
-# if prompt_form.submit():
-#     response = generate_response(prompt, api_key)
-#     st.write(response)
+# # if prompt_form.submit():
+# #     response = generate_response(prompt, api_key)
+# #     st.write(response)
 
 
-openai.api_key = "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"
+# openai.api_key = "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"
 
-st.title("GPT-3 Chatbot App")
+# st.title("GPT-3 Chatbot App")
 
-def generate_response(prompt):
-    completions = openai.Completion.create(
-        engine="text-davinci-002",
-        prompt=prompt,
-        max_tokens=1024,
-        n=1,
-        temperature=0.5,
-    )
+# def generate_response(prompt):
+#     completions = openai.Completion.create(
+#         engine="text-davinci-002",
+#         prompt=prompt,
+#         max_tokens=1024,
+#         n=1,
+#         temperature=0.5,
+#     )
 
-    message = completions.choices[0].text
-    return message
+#     message = completions.choices[0].text
+#     return message
 
-message = st.text_input("Enter your message:")
-send_button = st.button("Send")
+# message = st.text_input("Enter your message:")
+# send_button = st.button("Send")
 
-if send_button:
-    response = generate_response(message)
-    st.write("You said:", message)
-    st.write("Chatbot says:", response)
+# if send_button:
+#     response = generate_response(message)
+#     st.write("You said:", message)
+#     st.write("Chatbot says:", response)
 
 
 
