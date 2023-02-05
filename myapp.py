@@ -2,16 +2,18 @@ import streamlit as st
 import requests
 from bs4 import BeautifulSoup
 
-st.title("Social Media Comment Scraper")
+st.title("YouTube Comment Scraper")
 
-# Function to scrape comments from the social media post
-def scrape_comments(link):
-    # Send a GET request to the link
-    page = requests.get(link)
+# Function to scrape comments from a YouTube video
+def scrape_comments(video_id):
+    # Construct the YouTube comments API URL
+    url = f"https://www.youtube.com/watch?v={video_id}"
+    # Send a GET request to the API URL
+    page = requests.get(url)
     # Parse the page content with BeautifulSoup
     soup = BeautifulSoup(page.content, "html.parser")
     # Find all the comment elements on the page
-    comments = soup.find_all("div", class_="comments")
+    comments = soup.find_all("div", class_="comment-text-content")
     return comments
 
 # Function to perform sentiment analysis on the comments
@@ -26,11 +28,11 @@ def sentiment_analysis(comments):
             bad_count += 1
     return good_count, bad_count
 
-# Get the social media post link from the user
-link = st.text_input("Enter a social media post link:")
+# Get the YouTube video ID from the user
+video_id = st.text_input("Enter a YouTube video ID:")
 
-# Scrape the comments from the post
-comments = scrape_comments(link)
+# Scrape the comments from the video
+comments = scrape_comments(video_id)
 
 # Perform sentiment analysis on the comments
 if comments:
@@ -39,6 +41,7 @@ if comments:
     st.write("Bad reviews:", bad_count)
 else:
     st.write("No comments found.")
+
 
 # import streamlit as st
 # import openai
