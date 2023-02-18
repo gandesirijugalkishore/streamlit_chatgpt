@@ -1,16 +1,28 @@
 import streamlit as st
+import pandas as pd
 
-def calculate_avg_price(average_price, investment):
-    return average_price * investment
+def calculate_average_price(average_price, market_value, investment):
+    return (average_price * investment + market_value * investment) / (investment + investment)
 
-st.title("Average Crypto Price Calculator")
+st.title("Cryptocurrency Average Price Calculator")
 
-average_price = st.number_input("Enter the average price of the cryptocurrency:", min_value=0.0)
-investment = st.number_input("Enter the amount you want to invest:", min_value=0.0)
+# Load a pre-existing dataset with market values for 3 cryptocurrencies
+market_values = pd.DataFrame({
+    "Cryptocurrency": ["Bitcoin", "Ethereum", "Dogecoin"],
+    "Market Value (USD)": [64000, 2500, 0.05]
+})
+
+selected_crypto = st.selectbox("Select the cryptocurrency:", market_values["Cryptocurrency"])
+market_value = market_values[market_values["Cryptocurrency"] == selected_crypto]["Market Value (USD)"].iloc[0]
+average_price = st.number_input("Enter your average price of the cryptocurrency (in USD):", min_value=0.0)
+investment = st.number_input("Enter the amount you want to invest (in USD):", min_value=0.0)
 
 if st.button("Calculate Average Price"):
-    result = calculate_avg_price(average_price, investment)
-    st.success(f"The average price of your investment is: ${result:.2f}")
+    result = calculate_average_price(average_price, market_value, investment)
+    st.success(f"The average price of your {selected_crypto} investment is: ${result:.2f}")
+
+    
+
 
 
 
@@ -87,12 +99,11 @@ if st.button("Calculate Average Price"):
 # # #     st.write(response)
 
 
-# # openai.api_key = "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"
 
 # # st.title("GPT-3 Chatbot App")
 
 # # def generate_response(prompt):
-# #     completions = openai.Completion.create(
+# #     completions = 
 # #         engine="text-davinci-002",
 # #         prompt=prompt,
 # #         max_tokens=1024,
